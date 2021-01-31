@@ -40,12 +40,6 @@ public class UsuarioController {
 		return new ResponseEntity<>(usuarios, HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value = "/{id}" ,produces = "application/json")
-	public ResponseEntity<Usuario> deletaId(@PathVariable(value = "id") Long id){
-		
-		Usuario user =repositoryUsuario.deleteById(id);
-		
-		return new ResponseEntity<Usuario>(user.,HttpStatus.OK);
-	}
+
 	
 }
