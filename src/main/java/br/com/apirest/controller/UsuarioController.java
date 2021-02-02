@@ -33,7 +33,7 @@ public class UsuarioController {
 		
 	}
 	
-	@GetMapping(value = "/")
+	@GetMapping(value = "/", produces = "application/json")
 	public ResponseEntity<List<Usuario>> pegarUsuario(){
 		
 		List<Usuario> usuarios = (List<Usuario>) repositoryUsuario.findAll();
