@@ -25,6 +25,12 @@ public class Usuario {
 	private List<Telefones> telefones =new ArrayList<Telefones>();
 	
 	
+	public List<Telefones> getTelefones() {
+		return telefones;
+	}
+	public void setTelefones(List<Telefones> telefones) {
+		this.telefones = telefones;
+	}
 	public Long getId() {
 		return id;
 	}
