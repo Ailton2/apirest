@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Telefones {
 	
@@ -16,6 +18,7 @@ public class Telefones {
 	
 	private String numero;
 	
+	@JsonIgnore
 	@ManyToOne
 	@org.hibernate.annotations.ForeignKey(name = "usuario_id")
 	private Usuario usuario;
