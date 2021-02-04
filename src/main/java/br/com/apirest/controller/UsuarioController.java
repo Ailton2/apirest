@@ -46,6 +46,12 @@ public class UsuarioController {
 	@PostMapping(value = "/" ,produces = "application/json")
 	public ResponseEntity<Usuario> savarUsuario(@RequestBody Usuario usuario){
 		
+		for(int i=0;i<usuario.getTelefones().size();i++) {
+			
+			usuario.getTelefones().get(i).setUsuario(usuario);
+			
+		}
+		
 		 Usuario user = repositoryUsuario.save(usuario);
 		 
 		 return new ResponseEntity<Usuario>(user,HttpStatus.OK);
