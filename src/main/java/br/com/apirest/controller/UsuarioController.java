@@ -29,43 +29,34 @@ public class UsuarioController {
 	
 	@GetMapping(value = "/{id}" , produces = "application/json") 
 	public ResponseEntity<Usuario> pesquisar(@PathVariable (value = "id") Long id){
-		
-	   Optional<Usuario> user = repositoryUsuario.findById(id);
-		
+	    Optional<Usuario> user = repositoryUsuario.findById(id);
 		return new ResponseEntity(user.get(),HttpStatus.OK);
 		
 	}
 	
-	@GetMapping(value = "/", produces = "application/json")
+	@GetMapping
 	public ResponseEntity<List<Usuario>> pegarUsuario(){
-		
 		List<Usuario> usuarios = (List<Usuario>) repositoryUsuario.findAll();
 		return new ResponseEntity<>(usuarios, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/" ,produces = "application/json")
+	@PostMapping
 	public ResponseEntity<Usuario> savarUsuario(@RequestBody Usuario usuario){
 		
-		for(int i=0;i<usuario.getTelefones().size();i++) {
-			
-			usuario.getTelefones().get(i).setUsuario(usuario);
-			
+		for(int i=0;i<usuario.getTelefones().size();i++) {	
+		   usuario.getTelefones().get(i).setUsuario(usuario);
 		}
-		
-		 Usuario user = repositoryUsuario.save(usuario);
-		 
-		 return new ResponseEntity<Usuario>(user,HttpStatus.OK);
+		Usuario user = repositoryUsuario.save(usuario);
+		return new ResponseEntity<Usuario>(user,HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/" ,produces = "application/json")
+	@PutMapping
 	public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario){
 		
 		for(int i=0;i<usuario.getTelefones().size();i++) {
 			usuario.getTelefones().get(i).setUsuario(usuario);
 		}
-		
 		Usuario user =repositoryUsuario.save(usuario);
-		
 		return new ResponseEntity<Usuario>(user, HttpStatus.OK);
 		
 	}
@@ -74,7 +65,6 @@ public class UsuarioController {
 	public ResponseEntity<Long> deleteUser(@PathVariable Long id){
 		
 		repositoryUsuario.deleteById(id);
-		
 		return new ResponseEntity<Long>(id, HttpStatus.OK);
 	}
 
