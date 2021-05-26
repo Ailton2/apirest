@@ -42,7 +42,6 @@ public class UsuarioController {
 	
 	@PostMapping
 	public ResponseEntity<Usuario> savarUsuario(@RequestBody Usuario usuario){
-		
 		for(int i=0;i<usuario.getTelefones().size();i++) {	
 		   usuario.getTelefones().get(i).setUsuario(usuario);
 		}
