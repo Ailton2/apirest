@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -29,10 +30,16 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 		//ativando a permissao a URL inicial
 		.disable().authorizeRequests().antMatchers("/").permitAll()
 		.antMatchers("/index").permitAll()
+		//Url de logout - redireciona apos o user deslogar do sistema
 		.anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
-		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+		//Mapeia URL de logout e invalida o usuario
+		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		
 		//filtra requisicoes de login para autenticacoes
+		.and().addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), 
+				                   UsernamePasswordAuthenticationFilter.class)
+		//Filtra as demais requisicoes para verificar a presenca do token JWT no HEader HTTP
+		.addFilterBefore(new JwtApiAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
