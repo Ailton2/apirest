@@ -20,6 +20,8 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Usuario implements UserDetails {
 	
@@ -31,6 +33,7 @@ public class Usuario implements UserDetails {
 	
 	private String nome;
 	private String login;
+	
 	private String senha;
 	
 	@OneToMany(mappedBy = "usuario",orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -46,6 +49,8 @@ public class Usuario implements UserDetails {
 	table = "role", unique = false, updatable = false,
 	foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
 	private List<Role> roles;
+	
+	private String token = "";
 	
 	public List<Telefones> getTelefones() {
 		return telefones;
@@ -83,29 +88,41 @@ public class Usuario implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles;
 	}
+	@JsonIgnore
 	@Override
 	public String getPassword() {
 		return this.senha;
 	}
+	@JsonIgnore
 	@Override
 	public String getUsername() {
 		return this.login;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	
