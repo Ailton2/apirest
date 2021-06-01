@@ -33,7 +33,7 @@ public class Usuario implements UserDetails {
 	
 	private String nome;
 	private String login;
-	
+	private String cpf;
 	private String senha;
 	
 	@OneToMany(mappedBy = "usuario",orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -52,6 +52,14 @@ public class Usuario implements UserDetails {
 	
 	private String token = "";
 	
+	
+	
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 	public List<Telefones> getTelefones() {
 		return telefones;
 	}

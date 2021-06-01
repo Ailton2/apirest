@@ -48,6 +48,9 @@ public class JWTTokenAutenticacaoService {
 		//adicona no cabecalho http
 		response.addHeader(HEADER_STRING, token);
 		
+		 ApplicationContextLoad.getApplicationContext()
+			.getBean(RepositoryUsuario.class).atualizaTokenUser(JWT, username);
+		
 		liberacaoCors(response);
 		
 		//escreve token como resposta no corpo http
@@ -61,6 +64,7 @@ public class JWTTokenAutenticacaoService {
 		String token = request.getHeader(HEADER_STRING);
 		String tokenLimpo = token.replace(TOKEN_PREFIX, "").trim();
 		
+		try {
 		if(token != null) {
 			String user = Jwts.parser().setSigningKey(SECRET)
 					.parseClaimsJws(tokenLimpo)
@@ -77,6 +81,13 @@ public class JWTTokenAutenticacaoService {
 					}
 			
 				}
+			}
+		}//fim da condicao token
+		}catch(io.jsonwebtoken.ExpiredJwtException e) {
+			try {
+				response.getOutputStream().println("Seu TOKEN expirou");
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
 		}
 		liberacaoCors(response);

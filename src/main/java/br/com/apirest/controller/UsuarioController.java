@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.apirest.dto.UsuarioDTO;
 import br.com.apirest.model.Usuario;
 import br.com.apirest.repository.RepositoryUsuario;
 
@@ -29,9 +30,9 @@ public class UsuarioController {
 
 	
 	@GetMapping(value = "/{id}" , produces = "application/json") 
-	public ResponseEntity<Usuario> pesquisar(@PathVariable (value = "id") Long id){
+	public ResponseEntity<UsuarioDTO> pesquisar(@PathVariable (value = "id") Long id){
 	    Optional<Usuario> user = repositoryUsuario.findById(id);
-		return new ResponseEntity(user.get(),HttpStatus.OK);
+		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(user.get()),HttpStatus.OK);
 		
 	}
 	
