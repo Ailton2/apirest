@@ -11,10 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 //Mapeia URL ,endereco ,autoriza ou bloqueia acessos
+
 @Configuration
 @EnableWebSecurity
 public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
@@ -29,11 +29,11 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		
 		//ativando a permissao a URL inicial
-		.disable().authorizeRequests().antMatchers("/").permitAll()
-		.antMatchers("/index").permitAll()
+		.disable().authorizeRequests().antMatchers("/**").permitAll()
+		.antMatchers("/login").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		//Url de logout - redireciona apos o user deslogar do sistema
-		.anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
+		.anyRequest().authenticated().and().logout().logoutSuccessUrl("/login")
 		//Mapeia URL de logout e invalida o usuario
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		

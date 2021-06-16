@@ -37,7 +37,7 @@ public class UsuarioController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Usuario>> pegarUsuario(){
+	public ResponseEntity<?> pegarUsuario(){
 		List<Usuario> usuarios = (List<Usuario>) repositoryUsuario.findAll();
 		return new ResponseEntity<>(usuarios, HttpStatus.OK);
 	}

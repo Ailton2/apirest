@@ -33,8 +33,10 @@ public class ApirestApplication implements WebMvcConfigurer {
 	//mapeamento Global que reflete em todo o sistema
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/usuario/**").allowedMethods("GET")
-		.allowedOrigins("http://localhost:4200");
+		registry.addMapping("/**")
+		.allowedMethods("*")
+		.allowedOrigins("*");
+		/*Liberando o mapeamento de usuario para todas as origens*/
 	}
 
 }
