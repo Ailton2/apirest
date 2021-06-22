@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.apirest.dto.UsuarioDTO;
@@ -21,7 +22,7 @@ import br.com.apirest.model.Usuario;
 import br.com.apirest.repository.RepositoryUsuario;
 
 @RestController
-@RequestMapping(value = "/usuario")
+@RequestMapping(value = "/usuarios")
 public class UsuarioController {
 	
 	@Autowired
@@ -76,5 +77,11 @@ public class UsuarioController {
 		return new ResponseEntity<Long>(id, HttpStatus.OK);
 	}
 
+	@GetMapping("/nome")
+	public ResponseEntity<?> buscarPorNome(@RequestParam String nome){
+		List<Usuario> lista = repositoryUsuario.findUserByNome(nome);
+		
+		return ResponseEntity.ok(lista);
+	}
 	
 }

@@ -1,5 +1,7 @@
 package br.com.apirest.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +21,7 @@ public interface RepositoryUsuario extends JpaRepository<Usuario, Long> {
 	@Modifying
 	@Query("update Usuario set token = ?1 where login = ?2")
 	void atualizaTokenUser(String token, String login);
+	
+	@Query("select u from Usuario u where u.nome like %:nome%" )
+	List<Usuario> findUserByNome(String nome);
 }

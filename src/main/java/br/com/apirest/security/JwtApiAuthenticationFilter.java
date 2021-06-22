@@ -3,6 +3,7 @@ package br.com.apirest.security;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.GenericFilter;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -42,15 +43,13 @@ public class JwtApiAuthenticationFilter extends GenericFilter{
         } else {
             chain.doFilter(req, res);
         }
-		
-		//Estabelece a autenticacao para a requisicao
-//Authentication authentication = new JWTTokenAutenticacaoService()
-				//.getAuthentication((HttpServletRequest) request, (HttpServletResponse) response);
-		//coloca o processo de autenticacao no spring security
-		//SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		//chain.doFilter(req, res);
-		
 	}
+    @Override
+    public void destroy() {
+    }
+
+    @Override
+    public void init(FilterConfig config) throws ServletException {
+    }
 
 }
