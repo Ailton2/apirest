@@ -75,6 +75,26 @@
 			<version>0.7.0</version>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		</dependency> -->
+		
+		<dependency>
+		    <groupId>com.Sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports</artifactId>
+		    <version>6.17.0</version>
+		</dependency>
+		
+		
 		
 	</dependencies>
 

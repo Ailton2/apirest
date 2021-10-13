@@ -26,7 +26,7 @@ public class ApirestApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApirestApplication.class, args);
-		//System.out.println(new BCryptPasswordEncoder().encode("123"));
+		System.out.println(new BCryptPasswordEncoder().encode("123"));
 	}
 	
 	
@@ -36,7 +36,11 @@ public class ApirestApplication implements WebMvcConfigurer {
 		registry.addMapping("/**")
 		.allowedMethods("*")
 		.allowedOrigins("*");
-		/*Liberando o mapeamento de usuario para todas as origens*/
+		
+		registry.addMapping("/utils/**")
+		.allowedMethods("*")
+		.allowedOrigins("*");
+	
 	}
 
 }

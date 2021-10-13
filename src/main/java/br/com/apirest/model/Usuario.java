@@ -1,10 +1,13 @@
 package br.com.apirest.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,13 +17,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 @Entity
 public class Usuario implements UserDetails {
@@ -31,8 +41,12 @@ public class Usuario implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotNull
 	private String nome;
+	@NotNull
 	private String login;
+	
+	@Column(unique = true)
 	private String cpf;
 	private String senha;
 	private String cep;
@@ -42,9 +56,20 @@ public class Usuario implements UserDetails {
 	private String localidade;
 	private String uf;
 	
+	@ManyToOne
+	private Teste teste;
+	
+	@JsonFormat(pattern="yyyy-mm-dd")
+	private Date data_nascimento;
+	
+	private Integer profissao;
+	
+	private BigDecimal salario;
+	
+	private String email;
 	
 	@OneToMany(mappedBy = "usuario",orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	private List<Telefones> telefones =new ArrayList<Telefones>();
+	private List<Telefone> telefones =new ArrayList<Telefone>();
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_role",uniqueConstraints = 
@@ -57,9 +82,15 @@ public class Usuario implements UserDetails {
 	foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
 	private List<Role> roles;
 	
+
+	public List<Telefone> getTelefones() {
+		return telefones;
+	}
+	public void setTelefones(List<Telefone> telefones) {
+		this.telefones = telefones;
+	}
+	
 	private String token = "";
-	
-	
 	
 	public String getCpf() {
 		return cpf;
@@ -67,12 +98,7 @@ public class Usuario implements UserDetails {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public List<Telefones> getTelefones() {
-		return telefones;
-	}
-	public void setTelefones(List<Telefones> telefones) {
-		this.telefones = telefones;
-	}
+
 	public Long getId() {
 		return id;
 	}
@@ -100,7 +126,7 @@ public class Usuario implements UserDetails {
 	
 	
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Collection<Role> getAuthorities() {
 		return roles;
 	}
 	@JsonIgnore
@@ -181,7 +207,31 @@ public class Usuario implements UserDetails {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
-	
+	public Date getData_nascimento() {
+		return data_nascimento;
+	}
+	public void setData_nascimento(Date data_nascimento) {
+		this.data_nascimento = data_nascimento;
+	}
+	public Integer getProfissao() {
+		return profissao;
+	}
+	public void setProfissao(Integer profissao) {
+		this.profissao = profissao;
+	}
+	public BigDecimal getSalario() {
+		return salario;
+	}
+	public void setSalario(BigDecimal salario) {
+		this.salario = salario;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	
 
 }

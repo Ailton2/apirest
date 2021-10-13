@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import br.com.apirest.model.Telefone;
 import br.com.apirest.model.Usuario;
 
 @Repository
@@ -22,6 +23,13 @@ public interface RepositoryUsuario extends JpaRepository<Usuario, Long> {
 	@Query("update Usuario set token = ?1 where login = ?2")
 	void atualizaTokenUser(String token, String login);
 	
+	@Transactional
+	@Modifying
+	@Query(value = "update usuario set senha = ?1 where id = ?2" ,nativeQuery = true)
+	void updateSenha(String senha, Long codUser);
+	
 	@Query("select u from Usuario u where u.nome like %:nome%" )
 	List<Usuario> findUserByNome(String nome);
+	
+
 }

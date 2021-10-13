@@ -30,7 +30,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 		
 		//ativando a permissao a URL inicial
 		.disable().authorizeRequests().antMatchers("/**").permitAll()
-		.antMatchers("/login").permitAll()
+		.antMatchers("/login","/utils/**").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		//Url de logout - redireciona apos o user deslogar do sistema
 		.anyRequest().authenticated().and().logout().logoutSuccessUrl("/login")
