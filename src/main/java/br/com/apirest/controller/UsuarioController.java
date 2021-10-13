@@ -28,6 +28,7 @@ import br.com.apirest.repository.RepositoryUsuario;
 import br.com.apirest.service.ServiceRelatorio;
 import br.com.apirest.service.TelefoneService;
 import br.com.apirest.service.UsuarioService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/usuarios")
@@ -46,6 +47,7 @@ public class UsuarioController {
 	private ServiceRelatorio serviceRelatorio;
 
 	@GetMapping(value = "/{id}", produces = "application/json")
+	@ApiOperation(value = "Retora ma lista de usuarios por ID")
 	public ResponseEntity<UsuarioDTO> pesquisar(@PathVariable(value = "id") Long id) {
 		Optional<Usuario> user = repositoryUsuario.findById(id);
 		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(user.get()), HttpStatus.OK);
