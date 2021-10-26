@@ -3,7 +3,7 @@ package br.com.apirest.service;
 import java.io.File;
 import java.io.Serializable;
 import java.sql.Connection;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -18,12 +18,12 @@ import net.sf.jasperreports.engine.JasperPrint;
 @Service
 public class ServiceRelatorio implements Serializable {
 
-
 	private static final long serialVersionUID = 1L;
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public byte[] gerarRelatorio (String nomeRelatorio, ServletContext servletContext) throws Exception {
+	public byte[] gerarRelatorio (String nomeRelatorio,Map<String, Object> params ,ServletContext servletContext) throws Exception {
 	//obter a conexao
     Connection  connection = jdbcTemplate.getDataSource().getConnection();
     
@@ -32,12 +32,13 @@ public class ServiceRelatorio implements Serializable {
     		+ File.separator + nomeRelatorio + ".jasper";
     
     //gerar o relatorio
-    JasperPrint jasperPrint = JasperFillManager.fillReport(caminhoJasper,new HashMap<>(), connection);
+    JasperPrint jasperPrint = JasperFillManager.fillReport(caminhoJasper,params, connection);
     
     byte[] retorno = JasperExportManager.exportReportToPdf(jasperPrint);
     //exporta para bte o pdf para fazer o download
     connection.close();
     return retorno;
+    
 	}
 
 }

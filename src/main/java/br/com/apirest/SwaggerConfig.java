@@ -27,7 +27,7 @@ public class SwaggerConfig {
 	
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-					.title("API Spring res com angular 8")
+					.title("API Spring REST com angular 8")
 					.description("Webservice")
 					.version("1.0")
 					.build();
