@@ -18,7 +18,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-@Component
 public class JWTTokenAutenticacaoService {
 	
 	//tempo da validade do token 2 dias

@@ -17,15 +17,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -55,9 +49,6 @@ public class Usuario implements UserDetails {
 	private String bairro;
 	private String localidade;
 	private String uf;
-	
-	@ManyToOne
-	private Teste teste;
 	
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date data_nascimento;

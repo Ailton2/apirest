@@ -1,19 +1,14 @@
 package br.com.apirest.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.apirest.dao.UsuarioDao;
 import br.com.apirest.dto.UsuarioDTO;
-import br.com.apirest.model.Telefone;
 import br.com.apirest.model.Usuario;
 import br.com.apirest.repository.RepositoryUsuario;
 import br.com.apirest.service.ServiceRelatorio;
@@ -38,12 +33,15 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/usuario")
 public class UsuarioController {
-
-	@Autowired
-	private RepositoryUsuario repositoryUsuario;
 	
 	@Autowired
+	private UsuarioDao usuarioDao;
+
+	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private RepositoryUsuario repositoryUsuario;
 	
 	@Autowired
 	private TelefoneService telefoneService;
@@ -52,20 +50,22 @@ public class UsuarioController {
 	private ServiceRelatorio serviceRelatorio;
 
 	@GetMapping(value = "/{id}", produces = "application/json")
-	@ApiOperation(value = "Retorna uma lista de usuarios por ID")
+	@ApiOperation(value = "Retorna um usuario por ID")
 	public ResponseEntity<UsuarioDTO> pesquisar(@PathVariable(value = "id") Long id) {
-		Optional<Usuario> user = repositoryUsuario.findById(id);
-		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(user.get()), HttpStatus.OK);
+	    Usuario user = usuarioDao.buscarUsuarioPorId(id);
+		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(user), HttpStatus.OK);
 
 	}
 
 	@GetMapping
+	@ApiOperation(value = "Retorna uma lista de usuarios")
 	public ResponseEntity<?> listUsuarios() {
 		List<Usuario> usuarios = (List<Usuario>) repositoryUsuario.findAll();
 		return new ResponseEntity<>(usuarios, HttpStatus.OK);
 	}
 
 	@PostMapping
+	@ApiOperation(value = "Salva um usuario")
 	public ResponseEntity<Usuario> saveUsuario(@RequestBody Usuario usuario) {
 		for (int i = 0; i < usuario.getTelefones().size(); i++) {
 			usuario.getTelefones().get(i).setUsuario(usuario);
@@ -101,8 +101,7 @@ public class UsuarioController {
 
 	@GetMapping("/nome")
 	public ResponseEntity<?> buscarPorNome(@RequestParam String nome) {
-		List<Usuario> lista = repositoryUsuario.findUserByNome(nome);
-
+		List<Usuario> lista = usuarioService.buscarUsuariosPorNome(nome);
 		return ResponseEntity.ok(lista);
 	}
 	
@@ -124,9 +123,11 @@ public class UsuarioController {
 	}
 	
 	@GetMapping(value = "/relatorio/params", produces = "application/text")
-	public ResponseEntity<String> downloadRelatorioParams(HttpServletRequest request ,@RequestParam String dataInicio,@RequestParam String dataFim ) throws Exception{
+	public ResponseEntity<String> downloadRelatorioParams(HttpServletRequest request ,
+			                  @RequestParam String dataInicio,
+			                  @RequestParam String dataFim ) throws Exception{
 		SimpleDateFormat dtFormat = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat dateFormatParams = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		SimpleDateFormat dateFormatParams = new SimpleDateFormat("yyyy-MM-dd");
 		
 		String dataIni = dateFormatParams.format(dtFormat.parse(dataInicio));
 		String dateF = dateFormatParams.format(dtFormat.parse(dataFim));
