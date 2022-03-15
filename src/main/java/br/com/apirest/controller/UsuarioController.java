@@ -1,6 +1,10 @@
 package br.com.apirest.controller;
 
+import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,10 @@ import br.com.apirest.service.ServiceRelatorio;
 import br.com.apirest.service.TelefoneService;
 import br.com.apirest.service.UsuarioService;
 import io.swagger.annotations.ApiOperation;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @RestController
 @RequestMapping(value = "/usuario")
@@ -138,6 +146,24 @@ public class UsuarioController {
 
 		byte[] pdf = serviceRelatorio.gerarRelatorio("relatorio-usuario-param",params,request.getServletContext());
 
+		String base64Pdf = "data:application/pdf;base64," + org.apache.tomcat.util.codec.binary.Base64.encodeBase64String(pdf);
+		
+		return new ResponseEntity<String>(base64Pdf,HttpStatus.OK);
+			
+	}
+	
+	@GetMapping(value = "/relatorio/{id}", produces = "application/text")
+	public ResponseEntity<String> visializarRelUsuarioId(
+			                  @PathVariable Long id) throws Exception{
+		Usuario usuario = usuarioDao.buscarUsuarioPorId(id);
+
+		InputStream caminhoJasper = this.getClass()
+				.getResourceAsStream("/relatorios/relatorio-usuario-id.jasper");
+	
+		JasperPrint jasperPrint = JasperFillManager.fillReport(caminhoJasper, 
+				new HashMap<>(), new JRBeanCollectionDataSource(Arrays.asList(usuario)));
+
+		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 		String base64Pdf = "data:application/pdf;base64," + org.apache.tomcat.util.codec.binary.Base64.encodeBase64String(pdf);
 		
 		return new ResponseEntity<String>(base64Pdf,HttpStatus.OK);
